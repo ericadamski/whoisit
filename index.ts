@@ -5,11 +5,13 @@ import { SocksClient } from "socks";
 import { SocksProxyType } from "socks/typings/common/constants";
 import SERVERS from "./servers.json";
 import {
+  IpLocation,
   LookupConfig,
   LookupConfigWithProxy,
   LookupOptions,
   LookupResult,
   Server,
+  WhoisKey,
 } from "./types";
 
 type ServerRecord = string | null | Server | { ip: Server };
@@ -254,4 +256,54 @@ export async function lookup(
     serverConfig: server,
     options,
   });
+}
+
+export async function getIpLocationInfo(
+  ip: string
+): Promise<Partial<IpLocation>> {
+  if (!net.isIP(ip)) {
+    throw new Error("Input is not an IP");
+  }
+
+  const whoisData = await lookup(ip);
+
+  if (typeof whoisData !== "string") {
+    throw new Error("Recieved an unexpected result");
+  }
+
+  const lines = whoisData.split("\n");
+  const location: Partial<IpLocation> = {};
+
+  lines.forEach((line) => {
+    const [key, value] = line.split(":").map((part) => part.trim());
+
+    switch (key.toLowerCase() as WhoisKey) {
+      case WhoisKey.Address: {
+        location.address = value;
+        break;
+      }
+
+      case WhoisKey.City: {
+        location.city = value;
+        break;
+      }
+
+      case WhoisKey.Region: {
+        location.region = value;
+        break;
+      }
+
+      case WhoisKey.PostalCode: {
+        location.postalCode = value;
+        break;
+      }
+
+      case WhoisKey.Country: {
+        location.country = value;
+        break;
+      }
+    }
+  });
+
+  return location;
 }

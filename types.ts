@@ -45,3 +45,19 @@ export interface LookupConfig extends WithServer, Partial<WithProxy> {
 export interface LookupConfigWithProxy
   extends Omit<LookupConfig, keyof WithProxy>,
     WithProxy {}
+
+export interface IpLocation {
+  address: string;
+  city: string;
+  region: string;
+  postalCode: string;
+  country: string;
+}
+
+export enum WhoisKey {
+  Address = "address",
+  City = "city",
+  Region = "stateprov",
+  PostalCode = "postalcode",
+  Country = "country",
+}

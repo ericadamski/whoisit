@@ -3738,9 +3738,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"whois-ts@workspace:.":
+"whoisit@workspace:.":
   version: 0.0.0-use.local
-  resolution: "whois-ts@workspace:."
+  resolution: "whoisit@workspace:."
   dependencies:
     "@jest/globals": "npm:^29.7.0"
     "@types/jest": "npm:^29.5.12"
