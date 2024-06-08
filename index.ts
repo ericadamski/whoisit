@@ -143,6 +143,19 @@ function lookupViaSocket(
                   : parts
               );
             } catch (error) {
+              if (data != null && !config.options?.strictFollow) {
+                resolve(
+                  config.options?.verbose
+                    ? [
+                        {
+                          server: config.serverUrl.toString(),
+                          data,
+                        },
+                      ]
+                    : data
+                );
+              }
+
               reject(error);
             }
           }
@@ -259,13 +272,14 @@ export async function lookup(
 }
 
 export async function getIpLocationInfo(
-  ip: string
+  ip: string,
+  options: Pick<LookupOptions, "timeout" | "follow">
 ): Promise<Partial<IpLocation>> {
   if (!net.isIP(ip)) {
     throw new Error("Input is not an IP");
   }
 
-  const whoisData = await lookup(ip);
+  const whoisData = await lookup(ip, options);
 
   if (typeof whoisData !== "string") {
     throw new Error("Recieved an unexpected result");

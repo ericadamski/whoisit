@@ -12,6 +12,12 @@ export interface Proxy {
 }
 
 export interface LookupOptions {
+  /**
+   * Even if we find data before a failed follow, the entire lookup will fail.
+   *
+   * @default false
+   */
+  strictFollow?: boolean;
   follow?: number;
   timeout?: number;
   server?: Server;
