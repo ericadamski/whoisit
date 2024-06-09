@@ -271,9 +271,12 @@ export async function lookup(
   });
 }
 
+/**
+ * @param options - @default { timeout: 4000 }
+ */
 export async function getIpLocationInfo(
   ip: string,
-  options: Pick<LookupOptions, "timeout" | "follow">
+  options: Pick<LookupOptions, "timeout" | "follow"> = { timeout: ms("4s") }
 ): Promise<Partial<IpLocation>> {
   if (!net.isIP(ip)) {
     throw new Error("Input is not an IP");
