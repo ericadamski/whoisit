@@ -1,6 +1,6 @@
 {
   "name": "whoisit",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "test": "jest",
-    "build": "esbuild index.ts --bundle --platform=node --outdir=dist --minify && tsc"
+    "build": "esbuild index.ts --bundle --platform=node --outdir=dist --minify && tsc",
+    "prepublish": "yarn build"
   },
   "packageManager": "yarn@4.2.2",
   "devDependencies": {
